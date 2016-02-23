@@ -13,8 +13,8 @@ public class OracleTest {
 		try {
 			Class.forName(Constants.ORACLE_DRIVER);
 			conn = DriverManager.getConnection(
-					Constants.ORACLE_URL,
-					Constants.ORACLE_ID,
+					Constants.ORACLE_URL, 
+					Constants.ORACLE_ID, 
 					Constants.ORACLE_PASS
 					);
 			stmt = conn.createStatement();
@@ -22,9 +22,8 @@ public class OracleTest {
 			String name = null;
 			while (rs.next()) {
 				name = rs.getString("email");
-				System.out.println("이메일 : " + name);
 			}
-			
+			System.out.println("이름 : " + name);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

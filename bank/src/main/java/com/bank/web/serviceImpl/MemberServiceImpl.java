@@ -1,96 +1,123 @@
 package com.bank.web.serviceImpl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import com.bank.web.domain.MemberBean;
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.bank.web.domain.MemberVO;
+import com.bank.web.mapper.MemberMapper;
 import com.bank.web.service.MemberService;
 
-public class MemberServiceImpl implements MemberService {
-	Map<String, MemberBean> memberMap;
+@Service
+public class MemberServiceImpl implements MemberService{
+	// 필드
+	@Autowired MemberVO member;
+	private MemberVO[] memberList;
+	private Map<String, MemberVO> map;	// Map은 인터페이스
+	@Autowired private SqlSession sqlSession;	
+	
+	public MemberServiceImpl(){
+		map = new HashMap<String, MemberVO>();
+	}
 
-	public MemberServiceImpl() {
-		memberMap = new HashMap<String, MemberBean>();
+	public MemberVO[] getMemberList() {
+		return memberList;
+	}
+
+	public void setMemberList(MemberVO[] memberList) {
+		this.memberList = memberList;
 	}
 
 	@Override
-	public String logIn(String userId, String password) {
-		String result = "로그인 실패";
-		if (password.equals(memberMap.get(userId).getPassword())) {
-			result = "로그인 성공";
-		}
-		return result;
+	public MemberVO login(MemberVO member) {
+		// 로그인
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		member = mapper.selectMember(member);
+
+		return member;
 	}
 
 	@Override
-	public String update(MemberBean member) {
-		String result = "업데이트 실패";
-		if (memberMap.containsKey(member.getUserId())) {
-			memberMap.put(member.getUserId(), member);
-			result = "업데이트 성공";
-		}
-		return result;
+	public String update(MemberVO member) {
+		// 정보수정
+		map.replace(member.getUserid(), member);
+		return "업데이트 성공";
 	}
-
+	
 	@Override
-	public String join(MemberBean member) {
+	public String join(MemberVO member) {
 		// 회원가입
-		String result = "회원가입 실패";
-		if (!memberMap.containsKey(member.getUserId())) {
-			memberMap.put(member.getUserId(), member);
-			result = "회원가입 성공";
-		}
-		return result;
+		map.put(member.getUserid(), member);
+		return member.getName() + "회원 가입을 축하드립니다.";
 	}
 
 	@Override
-	public MemberBean searchById(String id) {
+	public MemberVO searchById(String id) {
 		// 아이디로 회원정보 검색
-		return memberMap.get(id);
+		return  map.get(id);
 	}
 
 	@Override
-	public List<MemberBean> searchByName(String name) {
+	public MemberVO[] searchByName(String name) {
 		// 이름으로 회원정보 검색
-		List<MemberBean> tmpMemList = new ArrayList<MemberBean>();
-		for (String key : memberMap.keySet()) {
-			if (name.equals(memberMap.get(key).getName())) {
-				tmpMemList.add(memberMap.get(key));
+		MemberVO[] tempList = new MemberVO[this.searchCountByName(name)];
+		int j = 0;
+
+		for (int i = 0; i < map.size(); i++) {
+			if (map.get(i).getName().equals(name)) {
+				tempList[j] = map.get(i);
+				j++;
 			}
 		}
-		memberMap.entrySet();
-		return tmpMemList;
+		return tempList;
 	}
 
 	@Override
-	public String remove(String userId) {
+	public String remove(String userid) {
 		// 회원 탈퇴
-		String result = "탈퇴 실패";
-		if (memberMap.remove(userId) != null) {
-			result = "탈퇴 성공";
-		}
-		return result;
+		
+		/*MemberBean tempMember = null;
+		String result = "";
+		
+		if(this.searchById(userid) != null){
+			for (int i = 0; i < this.getCount(); i++) {				
+				if (memberList[i].getUserid().equals(userid)) {
+					tempMember = memberList[i];
+					memberList[i] = memberList[this.getCount()-1];
+					memberList[this.getCount()-1] = null;
+				}			
+			}	
+			this.setCount(this.getCount()-1);
+			result = tempMember.getUserid() + "삭제 성공";
+		}else
+			result = "해당 아이디가 없음";
+			
+		return result;*/
+
+		return (map.remove(userid) != null)? "탈퇴 성공":"탈퇴 실패";
 	}
 
 	@Override
 	public int countAll() {
-		// 회원 수
-		//return memberList.size();
-		return memberMap.size();
+		// 전체 회원 수 조회
+		return map.size();
 	}
 
 	@Override
 	public int searchCountByName(String name) {
-		//이름으로 회원수 검색
-		int idx = 0;
-		for (String key : memberMap.keySet()) {
-			if (name.equals(memberMap.get(key).getName())) {
-				idx++;
+		// 이름으로 가입된 아이디 검색
+		int tempCount = 0;
+
+		for (int i = 0; i < map.size(); i++) {
+			if (memberList[i].getName().equals(name)) {
+				tempCount++;
 			}
 		}
-		return idx;
+
+		return tempCount;
 	}
 
 }
