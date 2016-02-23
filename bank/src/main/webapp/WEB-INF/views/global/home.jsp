@@ -6,10 +6,7 @@
 	<title>Home</title>
 </head>
 <body>
-<h1>
-	Hello world!  
-</h1>
-
-<P>  안녕하세요 ${name} !! </P>
+	<h1>=== 인터넷 뱅킹 사이트 ===</h1>
+	<a href="${context}/loginForm"><b>로그인 창으로 가기</b></a>
 </body>
 </html>
