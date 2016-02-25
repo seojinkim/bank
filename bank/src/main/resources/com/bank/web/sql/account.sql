@@ -12,14 +12,11 @@ DROP TABLE account;
 SELECT * FROM account;
 
 CREATE TABLE account(
-	seq NUMBER PRIMARY KEY,
+	seq 	  NUMBER PRIMARY KEY,
 	accountNo NUMBER,
-	money NUMBER,
-	password NUMBER,
-	userid VARCHAR2(30),
-	CONSTRAINT account_member_fk
-	FOREIGN KEY(userid)
-	REFERENCES member(userid)
+	money 	  NUMBER,
+	password  NUMBER,
+	userid 	  VARCHAR2(30)
 );	
 
 INSERT INTO account(seq,accountNo,money,password,userid) VALUES(

@@ -6,7 +6,15 @@
    <title>Document</title>
 </head>
 <body>
-   <h1>내 계좌정보 보기</h1>
-   <div><a href="${context}/member/logout">로그아웃</a></div>
+	<h1>${message}내 계좌정보 보기</h1>
+	<div>
+		<a href="${context}/member/detail">회원정보보기</a>
+	</div>
+	<div>
+		<a href="${context}/member/remove">회원탈퇴하기</a>
+	</div>
+	<div>
+		<a href="${context}/member/logout">로그아웃</a>
+	</div>
 </body>
 </html>

@@ -7,7 +7,31 @@
 	<select id="selectMember" resultType="com.bank.web.domain.MemberVO" parameterType="com.bank.web.domain.MemberVO">
 		SELECT * 
 		FROM   member 
-		WHERE  userid = #{userid} and password = #{password}
+		WHERE  userid = #{userid} 
+		AND    password = #{password}
 	</select> 
- 
+	<insert id="insertMember" parameterType="com.bank.web.domain.MemberVO">
+		INSERT INTO member
+		VALUES     (#{userid},
+		            #{name}, 
+		            #{password},
+		            #{addr}, 
+		            #{birth})
+	</insert>
+ 	<select id="selectUserid" resultType="string" parameterType="string">
+		SELECT userid
+		FROM   member
+		WHERE  userid = #{userid} 	
+ 	</select>
+ 	<update id="update" parameterType="com.bank.web.domain.MemberVO">
+ 		UPDATE member
+ 		SET    password = #{password},
+ 			   addr     = #{addr}
+ 		WHERE  userid   = #{userid}
+ 	</update>
+ 	<delete id="deleteMember" parameterType="string">
+ 		DELETE 
+ 		FROM  member
+ 		WHERE userid = #{userid}
+ 	</delete>
  </mapper>

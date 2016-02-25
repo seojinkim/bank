@@ -12,14 +12,16 @@ import com.bank.web.mapper.MemberMapper;
 import com.bank.web.service.MemberService;
 
 @Service
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
 	// 필드
-	@Autowired MemberVO member;
+	@Autowired
+	MemberVO member;
 	private MemberVO[] memberList;
-	private Map<String, MemberVO> map;	// Map은 인터페이스
-	@Autowired private SqlSession sqlSession;	
-	
-	public MemberServiceImpl(){
+	private Map<String, MemberVO> map; // Map은 인터페이스
+	@Autowired
+	private SqlSession sqlSession;
+
+	public MemberServiceImpl() {
 		map = new HashMap<String, MemberVO>();
 	}
 
@@ -41,23 +43,32 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public String update(MemberVO member) {
+	public int update(MemberVO member) {
 		// 정보수정
-		map.replace(member.getUserid(), member);
-		return "업데이트 성공";
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+
+		return mapper.update(member);
 	}
-	
+
 	@Override
-	public String join(MemberVO member) {
+	public int join(MemberVO member) {
 		// 회원가입
-		map.put(member.getUserid(), member);
-		return member.getName() + "회원 가입을 축하드립니다.";
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+
+		return mapper.insertMember(member);
 	}
 
 	@Override
 	public MemberVO searchById(String id) {
 		// 아이디로 회원정보 검색
-		return  map.get(id);
+		return map.get(id);
+	}
+
+	@Override
+	public String existCheck(String userid) {
+		// TODO Auto-generated method stub
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		return mapper.selectUserid(userid);
 	}
 
 	@Override
@@ -76,28 +87,10 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public String remove(String userid) {
+	public int remove(String userid) {
 		// 회원 탈퇴
-		
-		/*MemberBean tempMember = null;
-		String result = "";
-		
-		if(this.searchById(userid) != null){
-			for (int i = 0; i < this.getCount(); i++) {				
-				if (memberList[i].getUserid().equals(userid)) {
-					tempMember = memberList[i];
-					memberList[i] = memberList[this.getCount()-1];
-					memberList[this.getCount()-1] = null;
-				}			
-			}	
-			this.setCount(this.getCount()-1);
-			result = tempMember.getUserid() + "삭제 성공";
-		}else
-			result = "해당 아이디가 없음";
-			
-		return result;*/
-
-		return (map.remove(userid) != null)? "탈퇴 성공":"탈퇴 실패";
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		return mapper.deleteMember(userid);
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 select * from test;
 -- 실행 단축키 : ALT + X
-
+DROP TABLE member;
 SELECT * FROM member;
 
 CREATE TABLE member(
