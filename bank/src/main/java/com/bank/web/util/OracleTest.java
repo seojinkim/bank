@@ -3,6 +3,7 @@ package com.bank.web.util;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class OracleTest {
@@ -13,17 +14,17 @@ public class OracleTest {
 		try {
 			Class.forName(Constants.ORACLE_DRIVER);
 			conn = DriverManager.getConnection(
-					Constants.ORACLE_URL, 
-					Constants.ORACLE_ID, 
+					Constants.ORACLE_URL,
+					Constants.ORACLE_ID,
 					Constants.ORACLE_PASS
 					);
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT userid FROM member");
+			rs = stmt.executeQuery("SELECT * FROM member");
 			String name = null;
 			while (rs.next()) {
 				name = rs.getString("userid");
 			}
-			System.out.println("이름 : " + name);
+			System.out.println("이메일 : "+name);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

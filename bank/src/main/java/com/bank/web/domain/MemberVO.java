@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MemberVO {
-
 	private String userid;
 	private String name;
 	private String password;
@@ -40,11 +39,13 @@ public class MemberVO {
 	public void setBirth(int birth) {
 		this.birth = birth;
 	}
-	
 	@Override
 	public String toString() {
-		return "userid=" + userid + " / name=" + name + " / password=" + password + " / addr=" + addr
-				+ " / birth=" + birth;
+		return "회원정보 [아이디=" + userid + ","
+				+ " 이름=" + name 
+				+ ", 비번=" + password 
+				+ ", 주소=" + addr
+				+ ", 생년월일=" + birth + "]";
 	}
 	
 	

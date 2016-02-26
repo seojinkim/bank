@@ -1,10 +1,10 @@
 select * from test;
 -- 실행 단축키 : ALT + X
-DROP TABLE member;
-SELECT * FROM member;
 
+SELECT * FROM member;
+drop table member;
 CREATE TABLE member(
-	userid VARCHAR2(30) PRIMARY KEY, 
+	userid VARCHAR2(30) PRIMARY KEY,
 	name VARCHAR2(30),
 	password VARCHAR2(30),
 	addr VARCHAR2(30),
@@ -14,6 +14,8 @@ CREATE TABLE member(
 INSERT INTO member(userid,name,password,addr,birth)
 VALUES ('kim','김유신','1','서울',2000);
 INSERT INTO member(userid,name,password,addr,birth)
-VALUES ('lee','이유신','1','안양',1995);
+VALUES ('lee','이순신','1','안양',1995);
 INSERT INTO member(userid,name,password,addr,birth)
-VALUES ('kang','강유신','1','인천',2005);
+VALUES ('kang','강감찬','1','인천',2005);
+	
+	

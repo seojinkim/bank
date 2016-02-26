@@ -17,7 +17,7 @@ CREATE TABLE account(
 	money 	  NUMBER,
 	password  NUMBER,
 	userid 	  VARCHAR2(30)
-);	
+);
 
 INSERT INTO account(seq,accountNo,money,password,userid) VALUES(
 	seq.NEXTVAL, 1000, 10000, 1, 'kim'

@@ -1,4 +1,5 @@
-create emp_copy as
+create table emp_copy as
+select employee_id 사원번호, last_name 성, salary 연봉 
+from employees;
 
-select employee_id, last_name, salary
-from   employees;
+select * from emp_copy;

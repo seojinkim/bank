@@ -1,5 +1,6 @@
 package com.bank.web.controller;
 
+import java.util.List;
 import java.util.Scanner;
 
 import org.springframework.stereotype.Controller;
@@ -7,65 +8,68 @@ import org.springframework.stereotype.Controller;
 import com.bank.web.domain.MemberVO;
 import com.bank.web.service.MemberService;
 import com.bank.web.serviceImpl.MemberServiceImpl;
-
 @Controller
 public class MemberController2 {
-
 	public static void main(String[] args) {
-
-		Scanner sc = new Scanner(System.in);
-		MemberService service = new MemberServiceImpl();
-		MemberVO member = null;
-
-		while (true) {
-			System.out.println("[업무선택]\n"
-					+ "1. 회원 가입\n"
-					+ "2. 아이디로 회원정보 검색\n"
-					+ "3. 이름으로 회원정보 검색\n"
-					+ "4. 회원 탈퇴\n"
-					+ "5. 전체 조회\n"
-					+ "6. 이름으로 가입된 아이디 검색\n"			
-					+ "9. 종료");
+		Scanner scanner =new Scanner(System.in);
+		MemberService member= new MemberServiceImpl();
+		MemberVO mem = null;
+		
+		
+		 while (true) {
+			 
+			 
+			System.out.println("[메뉴]"
+					+ "\n0.가입하기"
+					+ "\n1.아이디로 회원정보검색"
+					+ "\n2.이름으로 회원정보검색"
+					+ "\n3.회원 수 세기"
+					+ "\n4.이름으로 회원 수 세기"
+					+ "\n5.탈퇴시키기 ");
 			
-			switch (sc.nextInt()) {
-			case 1:
-				System.out.println("아이디, 이름, 비밀번호, 주소, 생일 :");
-				member = new MemberVO();
-				member.setUserid(sc.next());
-				member.setName(sc.next());
-				member.setPassword(sc.next());
-				member.setAddr(sc.next());
-				member.setBirth(sc.nextInt());
+			switch (scanner.nextInt()) {
+	         		
+			case 0:
+				System.out.println("가입하시려면 id,password,name,address,birth입력하세요.");
 				
-				System.out.println("[가입완료] " + service.join(member));
+				mem=new MemberVO();
+				mem.setUserid(scanner.next());
+				mem.setPassword(scanner.next());
+				mem.setName(scanner.next());
+				mem.setAddr(scanner.next());
+				mem.setBirth(scanner.nextInt());
+				System.out.println(member.join(mem));
+				
 				break;
-			case 2:		
-				System.out.println("아이디 입력 :");
-				System.out.println("[정보조회] " + service.searchById(sc.next()).toString());
+				
+				
+			case 1:
+			System.out.println("아이디를 입력하세요: ");
+			System.out.println("회원정보는 "+member.searchById(scanner.next()).toString());
+			break;
+			
+			case 2:
+				System.out.println("이름을 입력하세요: ");
+				List<MemberVO> temp = member.searchByName(scanner.next());
+					System.out.println("회원정보는 "+temp);
 				break;
 			case 3:
-				System.out.println("이름 입력 :");
-				MemberVO[] members = service.searchByName(sc.next());
-				for (int i = 0; i < members.length; i++) {
-					System.out.println("[정보조회] " + members[i]);
-				}
+				System.out.println("총 회원 수는 "+member.countAll());
+				
 				break;
 			case 4:
-				System.out.println("삭제하려는 아이디 입력 :");
-				System.out.println("[회원탈퇴] " + service.remove(sc.next()));
+				System.out.println("이름을 입력하세요: ");
+				System.out.println("입력한 이름을 가진 회원 수는 "
+						+member.searchCountByName(scanner.next()));
 				break;
+				
 			case 5:
-				System.out.println("[전체조회] " + service.countAll() + "(명)");
-				break;
-			case 6:break;
-			case 9:return;
-
+				System.out.println("삭제하고 싶은 회원의 아이디는: ");
+				System.out.println(member.remove(scanner.next()));
 			default:
-				System.out.println("1~9번 사이에서 선택가능합니다.");
-				System.out.println("다시 선택해 주세요");
 				break;
 			}
+			
 		}
-	
 	}
 }
